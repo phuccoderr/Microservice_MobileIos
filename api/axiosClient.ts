@@ -1,5 +1,5 @@
 import { URL_CONSTANST } from "@/constants/api";
-import { getAccessToken } from "@/utils/AsyncStorage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const createAxiosInstance = (baseUrl: string) => {
@@ -10,8 +10,8 @@ const createAxiosInstance = (baseUrl: string) => {
     baseURL: baseUrl,
   });
 
-  axiosClient.interceptors.request.use((config) => {
-    const sessionToken = getAccessToken();
+  axiosClient.interceptors.request.use(async (config) => {
+    const sessionToken = await AsyncStorage.getItem("access_token");
 
     if (sessionToken && !config?.headers.Authorization) {
       config.headers.Authorization = `Bearer ${sessionToken}`;
@@ -34,3 +34,5 @@ const createAxiosInstance = (baseUrl: string) => {
 export const customersAxiosClient = createAxiosInstance(
   URL_CONSTANST.CUSTOMERS
 );
+
+export const productsAxiosClient = createAxiosInstance(URL_CONSTANST.PRODUCTS);

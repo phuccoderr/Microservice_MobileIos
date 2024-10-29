@@ -9,12 +9,14 @@ import React, { useState } from "react";
 import { TextInput } from "react-native-paper";
 
 interface ShowHidePasswordProps {
+  label?: string;
   password: string;
   onChangeText: (text: string) => void;
   onBlur: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }
 
 const ShowHidePassword = ({
+  label,
   password,
   onChangeText,
   onBlur,
@@ -26,7 +28,7 @@ const ShowHidePassword = ({
       <TextInput
         onChangeText={onChangeText}
         onBlur={onBlur}
-        label={"Password"}
+        label={label ?? "Password"}
         value={password}
         secureTextEntry={!showPassword}
         right={
