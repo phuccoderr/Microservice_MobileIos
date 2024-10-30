@@ -45,7 +45,6 @@ const TabLayout = () => {
             <Text className=" text-xs">{props.children}</Text>
           ),
       })}
-      sceneContainerStyle={{ backgroundColor: "black" }}
     >
       <Tabs.Screen
         name="index"

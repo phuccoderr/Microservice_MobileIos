@@ -23,8 +23,5 @@ export const useLoginCustomer = () => {
 
       router.replace("/(tabs)/");
     },
-    onError: (error) => {
-      console.log("error", error);
-    },
   });
 };

@@ -25,7 +25,7 @@ const createAxiosInstance = (baseUrl: string) => {
     },
     async (error) => {
       const originalRequest = error.config;
-      return Promise.reject(error);
+      throw error.response.data;
     }
   );
   return axiosClient;
