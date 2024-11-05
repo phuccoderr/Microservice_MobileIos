@@ -14,8 +14,8 @@ const AccountScreen = () => {
     }
   };
   return (
-    <View className="w-full flex flex-row justify-center items-center h-full">
-      <Text onPress={handleLogout} className="text-red-500">
+    <View style={styles.container}>
+      <Text onPress={handleLogout} style={{ color: "red" }}>
         AccountScreen
       </Text>
     </View>
@@ -24,4 +24,13 @@ const AccountScreen = () => {
 
 export default AccountScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+  },
+});

@@ -35,8 +35,8 @@ const FieldInput = ({
       onBlur={onBlur}
       onChangeText={onChangeText}
       style={[styles.text, { width: width }]}
-      textColor="white"
-      underlineColor="white"
+      textColor="black"
+      underlineColor="black"
       activeUnderlineColor="#0ea5e9"
       error={Boolean(errors[fieldName])}
     />
@@ -47,8 +47,7 @@ export default FieldInput;
 
 const styles = StyleSheet.create({
   text: {
-    color: "white",
-    backgroundColor: "black",
+    backgroundColor: "transparent",
     height: 64,
   },
 });

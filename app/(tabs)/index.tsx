@@ -35,63 +35,89 @@ const Home = () => {
         backgroundColor="#f0f0f0"
         translucent={false}
       />
-      <View className="w-full flex flex-col items-center">
-        <View className="flex flex-row w-[95%] justify-between mt-4">
+      <View style={styles.container}>
+        <View style={styles.header}>
           <TextInput
-            className="w-[90%]  h-12  rounded-xl border p-2 text-black"
+            style={styles.inputSearch}
             placeholder="Tìm kiếm..."
             placeholderTextColor={"black"}
             value={searchKeyword}
             onChangeText={(e) => setSearchKeyword(e)}
           />
-          <TouchableOpacity
-            className={`flex justify-center items-center w-[15%]   rounded-lg `}
-          >
+          <TouchableOpacity style={styles.touchable}>
             <AntDesign name="filter" size={24} color="#0ea5e9" />
           </TouchableOpacity>
         </View>
-        <View className="flex justify-center w-[98%] mt-4">
+        <View style={styles.body}>
           <FlatList
             data={products?.entities ?? []}
             keyExtractor={(item) => item.id}
             numColumns={2}
-            columnWrapperClassName="flex-row justify-between"
+            columnWrapperStyle={{
+              justifyContent: "space-between",
+            }}
             renderItem={({ item }) => (
               <Link
                 href={`/(user)/product/${item.id}`}
-                className="border flex flex-col gap-4 border-stone-300  rounded-xl w-[48%] "
+                style={[
+                  styles.flexCol,
+                  {
+                    borderWidth: 1,
+                    borderColor: "#d6d3d1",
+                    borderRadius: 5,
+                    width: "49%",
+                  },
+                ]}
               >
                 <View>
                   <Image
                     source={{
                       uri: item.url,
                     }}
-                    height={200}
-                    className="w-full rounded-t-lg"
+                    height={250}
+                    width={250}
                   />
-                  <View className="p-2 flex flex-col gap-4">
-                    <Text className=" text-xl font-bold ">{item.name}</Text>
+
+                  <View style={[styles.flexCol, styles.itemFlatList]}>
+                    <Text style={styles.textXl}>{item.name}</Text>
                     {item.sale > 0 ? (
-                      <View className="flex flex-row items-center gap-2">
-                        <Text className=" text-red-500">
+                      <View style={[styles.flexRow, styles.titleCard]}>
+                        <Text
+                          style={{
+                            color: "#ef4444",
+                            fontWeight: "bold",
+                            fontSize: 20,
+                          }}
+                        >
                           {formatVnd(calSale(item.price, item.sale))}{" "}
                         </Text>
-                        <View className="bg-yellow-300 rounded-xl">
-                          <Text className="text-red-400">-{item.sale}%</Text>
+                        <View
+                          style={{
+                            backgroundColor: "rgb(253 224 71)",
+                            borderRadius: 5,
+                          }}
+                        >
+                          <Text style={{ color: "#ef4444" }}>
+                            -{item.sale}%
+                          </Text>
                         </View>
                       </View>
                     ) : (
-                      <Text className="font-bold text-red-500 ">
+                      <Text
+                        style={{
+                          color: "rgb(239 68 68)",
+                          fontWeight: "bold",
+                          fontSize: 20,
+                        }}
+                      >
                         {formatVnd(item.price)}
                       </Text>
                     )}
-                    <View className="flex flex-row gap-2 items-center items-end">
-                      <Text className=" text-xs">{item.average_rating}</Text>
+                    <View style={[styles.flexRow, styles.cardFooter]}>
+                      <Text>{item.average_rating}</Text>
                       <Entypo name="star" size={10} color="#eab308" />
-                      <View className="h-8 border border-stone-300" />
-                      <Text className=" text-xs">
-                        {item.review_count} Đánh giá
-                      </Text>
+                      <View style={{ height: 8 }} />
+                      <Text>{item.review_count} Đánh giá</Text>
                     </View>
                   </View>
                 </View>
@@ -106,4 +132,66 @@ const Home = () => {
 
 export default Home;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "95%",
+    marginTop: 4,
+    gap: 4,
+  },
+  inputSearch: {
+    display: "flex",
+    borderRadius: 10,
+    borderColor: "#0ea5e9",
+    padding: 8,
+    color: "black",
+    width: "90%",
+    borderWidth: 1,
+  },
+  touchable: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "15%",
+    borderRadius: 10,
+  },
+  body: {
+    display: "flex",
+    justifyContent: "center",
+    width: "100%",
+    marginTop: 4,
+  },
+  flexRow: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  flexCol: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  itemFlatList: {
+    padding: 2,
+    gap: 8,
+  },
+  textXl: {
+    fontSize: 1.25,
+    lineHeight: 1.75,
+  },
+  titleCard: {
+    gap: 2,
+    alignItems: "center",
+  },
+  cardFooter: {
+    gap: 2,
+    alignItems: "center",
+  },
+});

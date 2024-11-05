@@ -8,6 +8,8 @@ import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { useRegisterCustomer } from "@/hooks/query-customers/useRegisterCustomer";
 import { Register } from "@/types/auth.type";
 import { Link } from "expo-router";
+import FieldInputError from "@/components/field-input-error";
+import { Button } from "react-native-ui-lib";
 
 const RegisterScreen = () => {
   const { formSchema } = useFormRegister();
@@ -18,8 +20,18 @@ const RegisterScreen = () => {
     mutation.mutate(data);
   };
   return (
-    <View className="flex items-center justify-center h-full bg-black gap-8">
-      <Text className="text-3xl text-white">Đăng ký tài khoản NStore</Text>
+    <View
+      style={[
+        styles.flexCol,
+        {
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 8,
+        },
+      ]}
+    >
+      <Text style={{ fontSize: 24 }}>Đăng ký tài khoản NStore</Text>
       <Formik
         initialValues={{
           email: "",
@@ -39,9 +51,16 @@ const RegisterScreen = () => {
           errors,
           touched,
         }) => (
-          <View className="flex items-center gap-4 w-full">
-            <View className="flex flex-row justify-center gap-6">
-              <View className="flex flex-col w-[42%] ">
+          <View
+            style={[
+              styles.flexCol,
+              { alignItems: "center", gap: 4, width: "100%" },
+            ]}
+          >
+            <View
+              style={[styles.flexRow, { justifyContent: "center", gap: 6 }]}
+            >
+              <View style={[styles.flexCol, { width: "44%" }]}>
                 <FieldInput
                   width="100%"
                   label="Họ"
@@ -51,27 +70,19 @@ const RegisterScreen = () => {
                   errors={errors}
                   fieldName={"first_name"}
                 />
-                {errors.first_name && (
-                  <Text className="text-red-500 self-start mt-2">
-                    <ErrorMessage name="first_name" />
-                  </Text>
-                )}
+                {errors.first_name && <FieldInputError name="first_name" />}
               </View>
-              <View className="flex flex-col w-[42%] ">
+              <View style={[styles.flexCol, { width: "44%" }]}>
                 <FieldInput
                   width="100%"
-                  label="Họ"
+                  label="Tên"
                   value={values.last_name}
                   onChangeText={handleChange("last_name")}
                   onBlur={handleBlur("last_name")}
                   errors={errors}
                   fieldName={"last_name"}
                 />
-                {errors.last_name && (
-                  <Text className="text-red-500 self-start mt-2">
-                    <ErrorMessage name="last_name" />
-                  </Text>
-                )}
+                {errors.last_name && <FieldInputError name="last_name" />}
               </View>
             </View>
             <FieldInput
@@ -83,21 +94,13 @@ const RegisterScreen = () => {
               errors={errors}
               fieldName={"email"}
             />
-            {errors.email && (
-              <Text className="text-red-500 self-start mt-2 ml-6">
-                <ErrorMessage name="email" />
-              </Text>
-            )}
+            {errors.email && <FieldInputError name="email" />}
             <ShowHidePassword
               onChangeText={handleChange("password")}
               onBlur={handleBlur("password")}
               password={values.password}
             />
-            {errors.password && (
-              <Text className="text-red-500 self-start ml-6">
-                <ErrorMessage name="password" />
-              </Text>
-            )}
+            {errors.password && <FieldInputError name="password" />}
             <ShowHidePassword
               label="Xác nhận password"
               onChangeText={handleChange("confirm_password")}
@@ -105,26 +108,42 @@ const RegisterScreen = () => {
               password={values.confirm_password}
             />
             {errors.confirm_password && (
-              <Text className="text-red-500 self-start ml-6">
-                <ErrorMessage name="confirm_password" />
-              </Text>
+              <FieldInputError name="confirm_password" />
             )}
-            <TouchableOpacity
+            <Button
               disabled={mutation.isPending}
               onPress={(event) => handleSubmit(event as any)}
-              className={`flex flex-row justify-center gap-4 w-[90%] p-4 rounded-lg items-center mt-2 ${
-                mutation.isPending ? "  bg-sky-300 " : "bg-sky-500"
-              }`}
+              style={[
+                styles.flexRow,
+                {
+                  justifyContent: "center",
+                  width: "90%",
+                  padding: 4,
+                  borderRadius: 8,
+                  alignItems: "center",
+                  marginTop: 2,
+                  backgroundColor: mutation.isPending ? "#7dd3fc" : "#0ea5e9",
+                },
+              ]}
             >
-              <Text className="text-center">Đăng ký</Text>
+              <Text>Đăng ký</Text>
               {mutation.isPending && (
                 <ActivityIndicator animating={true} color={MD2Colors.white} />
               )}
-            </TouchableOpacity>
-            <View className="flex w-[90%] flex-row justify-between items-center mt-2">
-              <Text className="text-white p-2">Bạn đã có tài khoản ?</Text>
-              <Link href="/">
-                <Text className="text-sky-500 p-2">Đăng nhập</Text>
+            </Button>
+            <View
+              style={[
+                styles.flexRow,
+                {
+                  justifyContent: "space-between",
+                  width: "90%",
+                  marginTop: 2,
+                  alignItems: "center",
+                },
+              ]}
+            >
+              <Link href="/login">
+                <Text style={{ padding: 2 }}>Trở lại Đăng nhập</Text>
               </Link>
             </View>
           </View>
@@ -136,4 +155,13 @@ const RegisterScreen = () => {
 
 export default RegisterScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  flexRow: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  flexCol: {
+    display: "flex",
+    flexDirection: "column",
+  },
+});

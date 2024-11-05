@@ -1,14 +1,16 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
 import ShowHidePassword from "@/components/show-hide-password";
-import { ErrorMessage, Formik } from "formik";
+import { Formik } from "formik";
 import { Login } from "@/types/auth.type";
 import { useFormLogin } from "@/hooks/query-customers/useFormLogin";
 import FieldInput from "@/components/field-input";
 import { useLoginCustomer } from "@/hooks/query-customers/useLoginCustomer";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
-import { Link, useRouter } from "expo-router";
-import { ErrorResponse } from "@/types/error.type";
+import { Link } from "expo-router";
+import { Button } from "react-native-ui-lib";
+import FieldInputError from "@/components/field-input-error";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const LoginScreen = () => {
   const { formSchema } = useFormLogin();
@@ -33,8 +35,18 @@ const LoginScreen = () => {
     });
   };
   return (
-    <View className="flex items-center justify-center h-full bg-black gap-6 ">
-      <Text className="text-3xl text-white">Welcome to NStore 👋</Text>
+    <View
+      style={[
+        styles.flexCol,
+        {
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100%",
+          gap: 12,
+        },
+      ]}
+    >
+      <Text style={{ fontSize: 24 }}>Welcome to NStore 👋</Text>
 
       <Formik
         initialValues={{ email: "", password: "" }}
@@ -49,8 +61,18 @@ const LoginScreen = () => {
           errors,
           touched,
         }) => (
-          <View className="flex items-center gap-4 w-full">
-            <View className="flex flex-row w-full justify-center">
+          <View
+            style={[
+              styles.flexCol,
+              { gap: 8, width: "100%", alignItems: "center" },
+            ]}
+          >
+            <View
+              style={[
+                styles.flexRow,
+                { width: "100%", justifyContent: "center" },
+              ]}
+            >
               <FieldInput
                 width="90%"
                 label="Email"
@@ -61,44 +83,65 @@ const LoginScreen = () => {
                 fieldName={"email"}
               />
             </View>
-            {errors.email && (
-              <Text className="text-red-500 self-start ml-8">
-                <ErrorMessage className="text-red-500" name="email" />
-              </Text>
-            )}
+            {errors.email && <FieldInputError name="email" />}
             <ShowHidePassword
               onChangeText={handleChange("password")}
               onBlur={handleBlur("password")}
               password={values.password}
             />
-            <Text className="text-red-500 self-start ml-8">
-              <ErrorMessage name="password" />
-            </Text>
+            {errors.password && <FieldInputError name="password" />}
             {errorMessage && (
-              <Text className="text-red-500 self-start ml-8">
-                {errorMessage}
-              </Text>
+              <View
+                style={[
+                  styles.flexRow,
+                  { width: "90%", gap: 4, alignItems: "center" },
+                ]}
+              >
+                <Text style={{ color: "red" }}>{errorMessage}</Text>
+                <MaterialCommunityIcons
+                  name="robot-dead-outline"
+                  size={24}
+                  color="red"
+                />
+              </View>
             )}
-            <TouchableOpacity
+            <Button
               disabled={mutation.isPending}
               onPress={(event) => handleSubmit(event as any)}
-              className={`flex flex-row justify-center gap-4 w-[90%] p-4 rounded-lg items-center  ${
-                mutation.isPending ? "  bg-sky-300 " : "bg-sky-500"
-              }`}
+              style={[
+                styles.flexRow,
+                {
+                  width: "90%",
+                  gap: 4,
+                  marginTop: 8,
+                  backgroundColor: mutation.isPending ? "#7dd3fc" : "#0ea5e9",
+                },
+              ]}
             >
-              <Text className="text-center">Đăng nhập</Text>
+              <Text style={{ textAlign: "center" }}>Đăng nhập</Text>
               {mutation.isPending && (
                 <ActivityIndicator animating={true} color={MD2Colors.white} />
               )}
-            </TouchableOpacity>
+            </Button>
           </View>
         )}
       </Formik>
-      <View className="flex w-[90%] flex-row justify-between items-center">
+      <View
+        style={[
+          styles.flexRow,
+          {
+            width: "90%",
+            justifyContent: "space-between",
+            alignItems: "center",
+          },
+        ]}
+      >
         <Link href={"/(auth)/register"}>
-          <Text className="text-white p-2">Bạn chưa có tài khoản?</Text>
+          <Text style={{ padding: 2 }}>Bạn chưa có tài khoản?</Text>
         </Link>
-        <Text className="text-white p-2">Quên mật khẩu ?</Text>
+        <Link href={"/(auth)/forgot-password"}>
+          <Text style={{ padding: 2 }}>Quên mật khẩu ?</Text>
+        </Link>
       </View>
     </View>
   );
@@ -112,5 +155,13 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "black",
     height: 64,
+  },
+  flexRow: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  flexCol: {
+    display: "flex",
+    flexDirection: "column",
   },
 });

@@ -6,4 +6,8 @@ export const productsApi = {
     const url = "category";
     return productsAxiosClient.get(url, { params });
   },
+  get: (id: string) => {
+    const url = `${id}`;
+    return productsAxiosClient.get(url);
+  },
 };

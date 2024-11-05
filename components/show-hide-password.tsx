@@ -1,7 +1,6 @@
 import {
   NativeSyntheticEvent,
   StyleSheet,
-  Text,
   TextInputFocusEventData,
   View,
 } from "react-native";
@@ -24,7 +23,7 @@ const ShowHidePassword = ({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View className="flex flex-row w-full justify-center">
+    <View style={styles.container}>
       <TextInput
         onChangeText={onChangeText}
         onBlur={onBlur}
@@ -38,8 +37,8 @@ const ShowHidePassword = ({
           />
         }
         style={styles.text}
-        underlineColor="white"
-        textColor="white"
+        underlineColor="black"
+        textColor="black"
         activeUnderlineColor="#0ea5e9"
       />
     </View>
@@ -52,7 +51,13 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     width: "90%",
-    backgroundColor: "black",
+    backgroundColor: "transparent",
     height: 64,
+  },
+  container: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "center",
   },
 });

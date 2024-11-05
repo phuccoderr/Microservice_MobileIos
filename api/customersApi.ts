@@ -14,4 +14,8 @@ export const customersApi = {
     const url = `account`;
     return customersAxiosClient.get(url);
   },
+  forgotPassword: (email: string) => {
+    const url = `auth/forgot_password`;
+    return customersAxiosClient.post(url, {}, { params: { email } });
+  },
 };

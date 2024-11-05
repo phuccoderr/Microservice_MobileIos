@@ -40,9 +40,9 @@ const TabLayout = () => {
         tabBarLabelStyle: { paddingBottom: 3 },
         tabBarLabel: (props) =>
           props.focused ? (
-            <Text className="text-sky-500 text-xs">{props.children}</Text>
+            <Text style={{ color: "#0ea5e9" }}>{props.children}</Text>
           ) : (
-            <Text className=" text-xs">{props.children}</Text>
+            <Text>{props.children}</Text>
           ),
       })}
     >
