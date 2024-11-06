@@ -9,23 +9,30 @@ const TabLayout = () => {
   const getIcons = (routeName: string, focused: boolean, size: number) => {
     if (routeName === "index") {
       return focused ? (
-        <FontAwesome5 name="home" size={24} color="#0ea5e9" />
+        <FontAwesome5 name="home" size={18} color="#0ea5e9" />
       ) : (
-        <FontAwesome5 name="home" size={24} color="black" />
+        <FontAwesome5 name="home" size={18} color="#9ca3af" />
       );
     }
     if (routeName === "account") {
       return focused ? (
-        <MaterialCommunityIcons name="account" size={24} color="#0ea5e9" />
+        <MaterialCommunityIcons name="account" size={18} color="#0ea5e9" />
       ) : (
-        <MaterialCommunityIcons name="account" size={24} color="black" />
+        <MaterialCommunityIcons name="account" size={18} color="#9ca3af" />
       );
     }
     if (routeName === "chat") {
       return focused ? (
-        <Entypo name="chat" size={24} color="#0ea5e9" />
+        <Entypo name="chat" size={18} color="#0ea5e9" />
       ) : (
-        <Entypo name="chat" size={24} color="black" />
+        <Entypo name="chat" size={18} color="#9ca3af" />
+      );
+    }
+    if (routeName === "cart") {
+      return focused ? (
+        <FontAwesome5 name="shopping-cart" size={18} color="#0ea5e9" />
+      ) : (
+        <FontAwesome5 name="shopping-cart" size={18} color="#9ca3af" />
       );
     }
   };
@@ -40,9 +47,13 @@ const TabLayout = () => {
         tabBarLabelStyle: { paddingBottom: 3 },
         tabBarLabel: (props) =>
           props.focused ? (
-            <Text style={{ color: "#0ea5e9" }}>{props.children}</Text>
+            <Text style={{ color: "#0ea5e9", fontSize: 12 }}>
+              {props.children}
+            </Text>
           ) : (
-            <Text>{props.children}</Text>
+            <Text style={{ color: "#9ca3af", fontSize: 12 }}>
+              {props.children}
+            </Text>
           ),
       })}
     >
@@ -58,6 +69,7 @@ const TabLayout = () => {
           title: "Tin nhắn",
         }}
       />
+      <Tabs.Screen name="cart" options={{ title: "Giỏ hàng" }} />
       <Tabs.Screen
         name="account"
         options={{

@@ -33,5 +33,8 @@ const createAxiosInstance = (baseUrl: string) => {
 export const customersAxiosClient = createAxiosInstance(
   URL_CONSTANST.CUSTOMERS
 );
-
 export const productsAxiosClient = createAxiosInstance(URL_CONSTANST.PRODUCTS);
+export const cartsAxiosClient = createAxiosInstance(URL_CONSTANST.CART);
+export const categoriesAxiosClient = createAxiosInstance(
+  URL_CONSTANST.CATEGORIES
+);

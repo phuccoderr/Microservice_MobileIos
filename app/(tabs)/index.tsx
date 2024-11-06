@@ -16,8 +16,13 @@ import useDebounce from "@/hooks/useDebounce";
 import { calSale, formatVnd } from "@/utils/common";
 import Entypo from "@expo/vector-icons/Entypo";
 import { Link } from "expo-router";
+import { Searchbar } from "react-native-paper";
+import { useGetAllCategories } from "@/hooks/query-categories/useGetAllCategories";
+import { FlashList } from "@shopify/flash-list";
+import { Button } from "react-native-ui-lib";
 
 const Home = () => {
+  const [cate, setCate] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
   const debounce = useDebounce(searchKeyword, 1000);
   const { data: products } = useGetAllProductsByCategory({
@@ -25,9 +30,15 @@ const Home = () => {
     limit: 100,
     sort: "asc",
     keyword: debounce,
-    cate_id: "",
+    cate_id: cate,
     sort_field: "",
   });
+  const { data: categories } = useGetAllCategories();
+
+  const listItemCategories: { id: string; name: string }[] = [];
+  listItemCategories.push({ id: "", name: "Tất cả" });
+  listItemCategories.push(...(categories ?? []));
+
   return (
     <SafeAreaView>
       <StatusBar
@@ -37,16 +48,49 @@ const Home = () => {
       />
       <View style={styles.container}>
         <View style={styles.header}>
-          <TextInput
+          <Searchbar
             style={styles.inputSearch}
             placeholder="Tìm kiếm..."
             placeholderTextColor={"black"}
             value={searchKeyword}
             onChangeText={(e) => setSearchKeyword(e)}
+            inputStyle={{
+              minHeight: 0,
+            }}
           />
           <TouchableOpacity style={styles.touchable}>
             <AntDesign name="filter" size={24} color="#0ea5e9" />
           </TouchableOpacity>
+        </View>
+        <View
+          style={[
+            styles.flexRow,
+            {
+              width: "100%",
+              height: 60,
+              alignItems: "center",
+            },
+          ]}
+        >
+          <FlashList
+            data={listItemCategories ?? []}
+            estimatedItemSize={200}
+            horizontal
+            contentContainerStyle={{ padding: 12 }}
+            renderItem={({ item }) => (
+              <Button
+                style={{
+                  backgroundColor: "#0ea5e9",
+                  marginHorizontal: 8,
+                  borderRadius: 10,
+                }}
+                size="large"
+                onPress={() => setCate(item.id)}
+              >
+                <Text style={{ color: "white" }}>{item.name}</Text>
+              </Button>
+            )}
+          />
         </View>
         <View style={styles.body}>
           <FlatList
@@ -148,13 +192,14 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   inputSearch: {
-    display: "flex",
     borderRadius: 10,
     borderColor: "#0ea5e9",
-    padding: 8,
+    backgroundColor: "transparent",
     color: "black",
-    width: "90%",
     borderWidth: 1,
+    width: "90%",
+
+    height: 40,
   },
   touchable: {
     display: "flex",
@@ -179,12 +224,13 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   itemFlatList: {
-    padding: 2,
+    padding: 10,
     gap: 8,
   },
   textXl: {
-    fontSize: 1.25,
-    lineHeight: 1.75,
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#57534e",
   },
   titleCard: {
     gap: 2,
