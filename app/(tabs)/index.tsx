@@ -16,10 +16,9 @@ import useDebounce from "@/hooks/useDebounce";
 import { calSale, formatVnd } from "@/utils/common";
 import Entypo from "@expo/vector-icons/Entypo";
 import { Link } from "expo-router";
-import { Searchbar } from "react-native-paper";
+import { Button, Searchbar } from "react-native-paper";
 import { useGetAllCategories } from "@/hooks/query-categories/useGetAllCategories";
 import { FlashList } from "@shopify/flash-list";
-import { Button } from "react-native-ui-lib";
 
 const Home = () => {
   const [cate, setCate] = useState("");
@@ -84,7 +83,6 @@ const Home = () => {
                   marginHorizontal: 8,
                   borderRadius: 10,
                 }}
-                size="large"
                 onPress={() => setCate(item.id)}
               >
                 <Text style={{ color: "white" }}>{item.name}</Text>

@@ -1,4 +1,4 @@
-const ipconfig = "172.20.10.5";
+const ipconfig = "192.168.1.170";
 
 export const URL_CONSTANST = {
   CUSTOMERS: `http://${ipconfig}:9150/api/v1/customers`,

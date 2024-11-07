@@ -1,10 +1,16 @@
-import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import { useGetProduct } from "@/hooks/query-products/useGetProduct";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { calSale, formatVnd } from "@/utils/common";
-import { IconButton } from "react-native-paper";
-import { Button, Image } from "react-native-ui-lib";
+import { Button, IconButton } from "react-native-paper";
 import Carousel from "react-native-reanimated-carousel";
 import ModalAddProduct from "@/components/modal-add-product";
 import { useAddToCart } from "@/hooks/query-cart/useAddCart";
@@ -62,7 +68,6 @@ const ProductDetail = () => {
               )}
             />
             <Button
-              size="small"
               style={{
                 position: "absolute",
                 bottom: 10,
@@ -155,11 +160,9 @@ const ProductDetail = () => {
               onPress={() => handleQuantity(quantity - 1)}
             />
           </View>
-          <Button
-            onPress={handleAddProduct}
-            label="Thêm vào giỏ hàng"
-            backgroundColor="#ef4444"
-          />
+          <Button onPress={handleAddProduct} buttonColor="#ef4444">
+            <Text>Thêm vào giỏ hàng</Text>
+          </Button>
         </View>
       </View>
     </ModalAddProduct>

@@ -4,12 +4,11 @@ import { ErrorMessage, Formik } from "formik";
 import { useFormRegister } from "@/hooks/query-customers/useFormRegister";
 import FieldInput from "@/components/field-input";
 import ShowHidePassword from "@/components/show-hide-password";
-import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import { ActivityIndicator, Button, MD2Colors } from "react-native-paper";
 import { useRegisterCustomer } from "@/hooks/query-customers/useRegisterCustomer";
 import { Register } from "@/types/auth.type";
 import { Link } from "expo-router";
 import FieldInputError from "@/components/field-input-error";
-import { Button } from "react-native-ui-lib";
 
 const RegisterScreen = () => {
   const { formSchema } = useFormRegister();
@@ -126,7 +125,7 @@ const RegisterScreen = () => {
                 },
               ]}
             >
-              <Text>Đăng ký</Text>
+              <Text style={{ color: "black" }}>Đăng ký</Text>
               {mutation.isPending && (
                 <ActivityIndicator animating={true} color={MD2Colors.white} />
               )}

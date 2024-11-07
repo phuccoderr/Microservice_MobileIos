@@ -1,14 +1,11 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
 
-import { useReactQueryDevTools } from "@dev-plugins/react-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { IconButton } from "react-native-paper";
 const queryClient = new QueryClient();
 
 const Layout = () => {
-  useReactQueryDevTools(queryClient);
   return (
     <QueryClientProvider client={queryClient}>
       <Stack>

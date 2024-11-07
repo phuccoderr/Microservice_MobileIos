@@ -6,9 +6,8 @@ import { Login } from "@/types/auth.type";
 import { useFormLogin } from "@/hooks/query-customers/useFormLogin";
 import FieldInput from "@/components/field-input";
 import { useLoginCustomer } from "@/hooks/query-customers/useLoginCustomer";
-import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import { ActivityIndicator, Button, MD2Colors } from "react-native-paper";
 import { Link } from "expo-router";
-import { Button } from "react-native-ui-lib";
 import FieldInputError from "@/components/field-input-error";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -108,20 +107,15 @@ const LoginScreen = () => {
             <Button
               disabled={mutation.isPending}
               onPress={(event) => handleSubmit(event as any)}
-              style={[
-                styles.flexRow,
-                {
-                  width: "90%",
-                  gap: 4,
-                  marginTop: 8,
-                  backgroundColor: mutation.isPending ? "#7dd3fc" : "#0ea5e9",
-                },
-              ]}
+              style={{
+                marginTop: 8,
+                width: "90%",
+              }}
+              mode="contained"
+              buttonColor={mutation.isPending ? "#7dd3fc" : "#0ea5e9"}
+              loading={mutation.isPending}
             >
-              <Text style={{ textAlign: "center" }}>Đăng nhập</Text>
-              {mutation.isPending && (
-                <ActivityIndicator animating={true} color={MD2Colors.white} />
-              )}
+              <Text style={{ color: "black" }}>Đăng nhập</Text>
             </Button>
           </View>
         )}

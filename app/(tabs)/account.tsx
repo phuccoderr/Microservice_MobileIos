@@ -10,11 +10,11 @@ import {
   useTabIndex,
   useTabNavigation,
 } from "react-native-paper-tabs";
+import Info from "@/components/account/info";
 
 const AccountScreen = () => {
-  const goTo = useTabNavigation();
-  const index = useTabIndex();
   const router = useRouter();
+  const [showIcons, setShowIcons] = React.useState<boolean>(true);
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("access_token");
@@ -23,67 +23,76 @@ const AccountScreen = () => {
       console.error("Failed to remove token:", error);
     }
   };
+
+  function handleChangeIndex(index: number) {
+    console.log("Tab Index:", index);
+  }
+
   return (
     <SafeAreaView>
-      <TabsProvider defaultIndex={0}>
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <View
+          style={[
+            styles.flexRow,
+            {
+              marginRight: 10,
+              marginLeft: 10,
+              height: 100,
+              alignItems: "center",
+              gap: 8,
+            },
+          ]}
+        >
+          <Avatar.Icon
+            size={50}
+            style={{ backgroundColor: "#0ea5e9" }}
+            icon="account-circle"
+          />
           <View
             style={[
-              styles.flexRow,
+              styles.flexCol,
               {
-                marginRight: 10,
-                marginLeft: 10,
-                height: 100,
-                alignItems: "center",
-                gap: 8,
+                gap: 4,
+                justifyContent: "center",
+                height: "100%",
               },
             ]}
           >
-            <Avatar.Icon
-              size={50}
-              style={{ backgroundColor: "#0ea5e9" }}
-              icon="account-circle"
-            />
-            <View
-              style={[
-                styles.flexCol,
-                {
-                  gap: 4,
-                  justifyContent: "center",
-                  height: "100%",
-                },
-              ]}
-            >
-              <Text style={{ fontSize: 18 }}>customer@gmail.com</Text>
-              <Text style={{ fontSize: 14 }}>Nguyen Hoang Phuc</Text>
-            </View>
-            <Button
-              style={{ marginLeft: "auto", backgroundColor: "#0ea5e9" }}
-              onPress={handleLogout}
-              mode="contained"
-              icon={"logout"}
-            >
-              <Text>Logout</Text>
-            </Button>
+            <Text style={{ fontSize: 18 }}>customer@gmail.com</Text>
+            <Text style={{ fontSize: 14 }}>Nguyen Hoang Phuc</Text>
           </View>
-          <Tabs>
-            <TabScreen label="Thông tin">
-              <View style={{ flex: 1 }}>
-                <Title>Explore</Title>
-                <Paragraph>Index: {index}</Paragraph>
-                <Button onPress={() => goTo(1)}>Go to Flights</Button>
-              </View>
-            </TabScreen>
-            <TabScreen label="Hoá đơn">
-              <View style={{ flex: 1 }}>
-                <Title>Explore</Title>
-                <Paragraph>Index: {index}</Paragraph>
-                <Button onPress={() => goTo(2)}>Go to Flights</Button>
-              </View>
-            </TabScreen>
-          </Tabs>
+          <Button
+            style={{ marginLeft: "auto", backgroundColor: "#0ea5e9" }}
+            onPress={handleLogout}
+            mode="contained"
+            icon={"logout"}
+          >
+            <Text>Logout</Text>
+          </Button>
         </View>
-      </TabsProvider>
+        <View style={{ height: 670 }}>
+          <TabsProvider defaultIndex={0} onChangeIndex={handleChangeIndex}>
+            <Tabs
+              uppercase
+              showTextLabel
+              iconPosition="leading"
+              showLeadingSpace
+            >
+              <TabScreen
+                label="Thông tin"
+                onPressIn={() => {
+                  console.log("onPressIn explore");
+                }}
+              >
+                <Info />
+              </TabScreen>
+              <TabScreen label="Hoá đơn">
+                <View style={{ backgroundColor: "black", flex: 1 }} />
+              </TabScreen>
+            </Tabs>
+          </TabsProvider>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };

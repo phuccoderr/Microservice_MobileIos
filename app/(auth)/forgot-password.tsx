@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-import { TextInput } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link } from "expo-router";
-import { Button } from "react-native-ui-lib";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useForgotPassword } from "@/hooks/query-customers/useForgotPassword";
 
@@ -74,20 +73,17 @@ const ForgotPasswordScreen = () => {
           disabled={mutation.isPending}
           style={{
             width: "90%",
-            alignSelf: "center",
             backgroundColor: "#0ea5e9",
             display: "flex",
             flexDirection: "row",
-            gap: 8,
+            justifyContent: "center",
+            alignItems: "center",
           }}
           onPress={handleForgotPassword}
+          icon={"email-fast-outline"}
+          textColor="black"
         >
           <Text>Đặt lại mật khẩu</Text>
-          <MaterialCommunityIcons
-            name="email-fast-outline"
-            size={24}
-            color="black"
-          />
         </Button>
         <Link
           href="/login"
