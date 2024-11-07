@@ -13,8 +13,3 @@ export const useFormLogin = () => {
 
   return { formSchema };
 };
-
-// .matches(/[A-Z]/, "Mật khẩu cần có ít nhất một chữ in hoa")
-//     .matches(/[a-z]/, "Mật khẩu cần có ít nhất một chữ thường")
-//     .matches(/\d/, "Mật khẩu cần có ít nhất một chữ số")
-//     .matches(/[\W_]/, "Mật khẩu cần có ít nhất một ký tự đặc biệt")

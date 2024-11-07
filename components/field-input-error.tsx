@@ -14,6 +14,7 @@ const FieldInputError = ({ name }: FieldInputErrorProps) => {
           color: "red",
           alignSelf: "flex-start",
           marginTop: 2,
+          marginLeft: 5,
         }}
       >
         <ErrorMessage name={name} />
