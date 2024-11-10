@@ -12,3 +12,8 @@ export type Customer = {
   image_id: string;
   reset_password_token: string;
 };
+
+export type UpdateCustomer = Pick<
+  Customer,
+  "first_name" | "last_name" | "phone_number" | "address"
+>;

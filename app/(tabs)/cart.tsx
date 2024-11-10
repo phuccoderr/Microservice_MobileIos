@@ -202,46 +202,7 @@ const CartScreen = () => {
                   {formatVnd(getTotal(carts ?? []))}
                 </Text>
               </View>
-              {/* <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginRight: 10,
-              marginLeft: 10,
-            }}
-          >
-            <Text
-              style={{ fontSize: 22, fontWeight: "bold", color: "#78716c" }}
-            >
-              Phí ship:
-            </Text>
-            <Text
-              style={{ fontSize: 22, fontWeight: "bold", color: "#78716c" }}
-            >
-              {formatVnd(30000)}
-            </Text>
-          </View> */}
               <Divider style={{ backgroundColor: "#a8a29e" }} />
-              {/* <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginRight: 10,
-              marginLeft: 10,
-            }}
-          >
-            <Text
-              style={{ fontSize: 22, fontWeight: "bold", color: "#78716c" }}
-            >
-              Tổng cộng:
-            </Text>
-            <Text
-              style={{ fontSize: 22, fontWeight: "bold", color: "#78716c" }}
-            >
-              {formatVnd(getTotal(carts ?? []) + 30000)}
-            </Text>
-          </View> */}
-
               <Button
                 mode="contained-tonal"
                 icon="archive-outline"

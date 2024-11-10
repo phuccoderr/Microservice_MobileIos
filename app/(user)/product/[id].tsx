@@ -1,19 +1,15 @@
-import {
-  Dimensions,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Dimensions, Image, ScrollView, StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import { useGetProduct } from "@/hooks/query-products/useGetProduct";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { calSale, formatVnd } from "@/utils/common";
-import { Button, IconButton } from "react-native-paper";
+import { calSale, formatDate, formatVnd } from "@/utils/common";
+import { Avatar, Button, Divider, IconButton, Text } from "react-native-paper";
 import Carousel from "react-native-reanimated-carousel";
 import ModalAddProduct from "@/components/modal-add-product";
 import { useAddToCart } from "@/hooks/query-cart/useAddCart";
+import { Rating } from "react-native-ratings";
+import { useGetRatings } from "@/hooks/query-reviews/useGetRatings";
+import { FlashList } from "@shopify/flash-list";
 
 const ProductDetail = () => {
   const width = Dimensions.get("window").width;
@@ -24,6 +20,7 @@ const ProductDetail = () => {
   const [indexImage, setIndexImage] = useState(0);
   const [visible, setVisible] = React.useState(false);
   const mutation = useAddToCart();
+  const { data: reviews } = useGetRatings(id);
 
   const images: string[] = [];
   images.push(product?.url ?? "");
@@ -75,7 +72,7 @@ const ProductDetail = () => {
                 backgroundColor: "#78716c",
               }}
             >
-              <Text>
+              <Text style={{ color: "black" }}>
                 {indexImage + 1}/{images.length}
               </Text>
             </Button>
@@ -87,12 +84,14 @@ const ProductDetail = () => {
               style={{ position: "absolute", top: 60, left: 10 }}
             />
           </View>
-          <View style={[styles.flexCol, { padding: 10, height: "100%" }]}>
+          <View style={[styles.flexCol, { padding: 10 }]}>
             <View style={[styles.flexCol, { marginTop: 10, gap: 8 }]}>
-              <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+              <Text
+                style={{ fontSize: 24, fontWeight: "bold", color: "black" }}
+              >
                 {product?.name}
               </Text>
-              <Text>Số lượng: {product?.stock}</Text>
+              <Text style={{ color: "black" }}>Số lượng: {product?.stock}</Text>
             </View>
             {product && product?.sale > 0 ? (
               <View style={[styles.flexRow, styles.titleCard]}>
@@ -122,17 +121,93 @@ const ProductDetail = () => {
                   fontWeight: "bold",
                   fontSize: 36,
                   marginTop: 24,
+                  color: "black",
                 }}
               >
                 {formatVnd(product?.price ?? 0)}
               </Text>
             )}
             <View style={[styles.flexCol, { marginTop: 36, gap: 8 }]}>
-              <Text style={{ fontSize: 24, fontWeight: "500" }}>Mô tả:</Text>
+              <Text style={{ fontSize: 24, fontWeight: "500", color: "black" }}>
+                Mô tả:
+              </Text>
               <Text style={{ color: "#71717a", fontSize: 18 }}>
                 {product?.description}
               </Text>
             </View>
+          </View>
+          <View
+            style={[
+              styles.flexCol,
+              { backgroundColor: "#fff", height: 500, width: "100%" },
+            ]}
+          >
+            <View style={[styles.flexRow, { gap: 8 }]}>
+              <View style={[styles.flexCol, { gap: 4, padding: 10 }]}>
+                <Text style={{ color: "black" }}>Đánh giá sản phẩm</Text>
+                <View
+                  style={[styles.flexRow, { gap: 4, alignItems: "center" }]}
+                >
+                  <Rating
+                    startingValue={product?.average_rating}
+                    imageSize={20}
+                    readonly
+                    style={{ alignItems: "flex-start" }}
+                  />
+                  <Text style={{ color: "black" }}>
+                    {product?.average_rating}/5
+                  </Text>
+                  <Text style={{ color: "black" }}>
+                    ({product?.review_count} đánh giá)
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <Divider
+              style={{ marginHorizontal: 10, backgroundColor: "#d4d4d8" }}
+            />
+            <FlashList
+              data={reviews?.entities ?? []}
+              extraData={reviews?.entities}
+              estimatedItemSize={100}
+              renderItem={({ item }) => (
+                <>
+                  <View style={[styles.flexRow, { padding: 10, gap: 18 }]}>
+                    <Avatar.Image
+                      size={32}
+                      source={require("@/assets/images/phi-avatar.jpg")}
+                    />
+                    <View style={[styles.flexCol, { gap: 4 }]}>
+                      <Text style={{ fontSize: 16, color: "black" }}>
+                        {item.name ?? "Unknown"}
+                      </Text>
+                      <Rating
+                        startingValue={item.rating}
+                        ratingImage
+                        imageSize={10}
+                        readonly
+                        style={{ alignItems: "flex-start" }}
+                      />
+                      <Text style={{ color: "black" }}>
+                        Tiêu đề: {item.headline}
+                      </Text>
+                      <Text style={{ color: "black" }}> {item.comment}</Text>
+                      <Text style={{ color: "black" }}>
+                        Thời gian: {formatDate(item.created_at)}
+                      </Text>
+                    </View>
+                  </View>
+                  <Divider
+                    style={{
+                      marginHorizontal: 20,
+                      height: 2,
+                      borderRadius: 10,
+                      backgroundColor: "#d4d4d8",
+                    }}
+                  />
+                </>
+              )}
+            />
           </View>
         </ScrollView>
         <View
@@ -153,15 +228,22 @@ const ProductDetail = () => {
               size={24}
               onPress={() => handleQuantity(quantity + 1)}
             />
-            <Text style={{ fontSize: 20 }}>{quantity}</Text>
+            <Text style={{ fontSize: 20, color: "black" }}>{quantity}</Text>
             <IconButton
               icon="minus"
               size={24}
               onPress={() => handleQuantity(quantity - 1)}
             />
           </View>
-          <Button onPress={handleAddProduct} buttonColor="#ef4444">
-            <Text>Thêm vào giỏ hàng</Text>
+          <Button
+            onPress={handleAddProduct}
+            buttonColor="#ef4444"
+            textColor="#fff"
+            labelStyle={{ fontWeight: "bold" }}
+            contentStyle={{ alignContent: "center", padding: 10 }}
+            loading={mutation.isPending}
+          >
+            Thêm vào giỏ hàng
           </Button>
         </View>
       </View>

@@ -41,7 +41,10 @@ export const productsAxiosClient = createAxiosInstance(URL_CONSTANST.PRODUCTS);
 export const discountsAxiosClient = createAxiosInstance(
   URL_CONSTANST.DISCOUNTS
 );
+export const ordersAxiosClient = createAxiosInstance(URL_CONSTANST.ORDERS);
 export const cartsAxiosClient = createAxiosInstance(URL_CONSTANST.CART);
+export const reviewsAxiosClient = createAxiosInstance(URL_CONSTANST.REVIEWS);
+export const chatsAxiosClient = createAxiosInstance(URL_CONSTANST.CHATS);
 export const categoriesAxiosClient = createAxiosInstance(
   URL_CONSTANST.CATEGORIES
 );

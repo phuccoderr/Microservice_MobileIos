@@ -19,3 +19,11 @@ export const getTotal = (carts: Cart[]) => {
   });
   return total;
 };
+
+export const formatDate = (date: string) => {
+  return new Date(date).toISOString().split("T")[0];
+};
+
+export const isEmpty = (obj: object) => {
+  return Object.keys(obj).length === 0 && obj.constructor === Object;
+};

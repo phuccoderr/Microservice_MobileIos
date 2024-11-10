@@ -1,5 +1,6 @@
 import { customersAxiosClient } from "@/api/axiosClient";
 import { Login, Register } from "@/types/auth.type";
+import { UpdateCustomer } from "@/types/customer.type";
 
 export const customersApi = {
   login: (data: Login) => {
@@ -17,5 +18,9 @@ export const customersApi = {
   forgotPassword: (email: string) => {
     const url = `auth/forgot_password`;
     return customersAxiosClient.post(url, {}, { params: { email } });
+  },
+  update: (body: UpdateCustomer) => {
+    const url = "account";
+    return customersAxiosClient.patch(url, body);
   },
 };

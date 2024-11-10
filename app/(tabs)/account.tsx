@@ -1,32 +1,25 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Avatar, Button, Paragraph, Title } from "react-native-paper";
-import {
-  TabsProvider,
-  Tabs,
-  TabScreen,
-  useTabIndex,
-  useTabNavigation,
-} from "react-native-paper-tabs";
+import { Avatar, Button } from "react-native-paper";
+import { TabsProvider, Tabs, TabScreen } from "react-native-paper-tabs";
 import Info from "@/components/account/info";
+import { useGetMe } from "@/hooks/query-customers/useGetMe";
+import Order from "@/components/account/order";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const AccountScreen = () => {
   const router = useRouter();
-  const [showIcons, setShowIcons] = React.useState<boolean>(true);
+  const { data: me } = useGetMe();
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("access_token");
-      router.push("/(auth)/login");
+      router.replace("/(auth)/login");
     } catch (error) {
       console.error("Failed to remove token:", error);
     }
   };
-
-  function handleChangeIndex(index: number) {
-    console.log("Tab Index:", index);
-  }
 
   return (
     <SafeAreaView>
@@ -58,8 +51,10 @@ const AccountScreen = () => {
               },
             ]}
           >
-            <Text style={{ fontSize: 18 }}>customer@gmail.com</Text>
-            <Text style={{ fontSize: 14 }}>Nguyen Hoang Phuc</Text>
+            <Text style={{ fontSize: 18 }}>{me?.email}</Text>
+            <Text
+              style={{ fontSize: 14 }}
+            >{`${me?.first_name} ${me?.last_name}`}</Text>
           </View>
           <Button
             style={{ marginLeft: "auto", backgroundColor: "#0ea5e9" }}
@@ -67,27 +62,24 @@ const AccountScreen = () => {
             mode="contained"
             icon={"logout"}
           >
-            <Text>Logout</Text>
+            <Text>Đăng xuất</Text>
           </Button>
         </View>
         <View style={{ height: 670 }}>
-          <TabsProvider defaultIndex={0} onChangeIndex={handleChangeIndex}>
+          <TabsProvider defaultIndex={0}>
             <Tabs
               uppercase
               showTextLabel
               iconPosition="leading"
               showLeadingSpace
             >
-              <TabScreen
-                label="Thông tin"
-                onPressIn={() => {
-                  console.log("onPressIn explore");
-                }}
-              >
-                <Info />
+              <TabScreen label="Thông tin">
+                <Info me={me} />
               </TabScreen>
               <TabScreen label="Hoá đơn">
-                <View style={{ backgroundColor: "black", flex: 1 }} />
+                <GestureHandlerRootView>
+                  <Order me={me} />
+                </GestureHandlerRootView>
               </TabScreen>
             </Tabs>
           </TabsProvider>

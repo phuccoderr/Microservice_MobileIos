@@ -65,9 +65,12 @@ const TabLayout = () => {
       />
       <Tabs.Screen
         name="chat"
-        options={{
+        options={({ route }) => ({
           title: "Tin nhắn",
-        }}
+          tabBarStyle: {
+            display: "flex",
+          },
+        })}
       />
       <Tabs.Screen name="cart" options={{ title: "Giỏ hàng" }} />
       <Tabs.Screen

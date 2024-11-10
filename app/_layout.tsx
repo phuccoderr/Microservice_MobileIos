@@ -29,6 +29,12 @@ const Layout = () => {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="(user)/thanks"
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
     </QueryClientProvider>
   );

@@ -68,6 +68,7 @@ const CheckoutScreen = () => {
     mutationPlaceOrder.mutate(values, {
       onSuccess: (data) => {
         code && mutationApplyCode.mutate(code);
+        router.push(`/(user)/thanks`);
       },
     });
   };
@@ -150,7 +151,7 @@ const CheckoutScreen = () => {
                   disabled
                   style={{ width: "90%" }}
                 >
-                  <Text>{me.email}</Text>
+                  <Text>{me?.email}</Text>
                 </Button>
                 <FieldInput
                   width="90%"
