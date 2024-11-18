@@ -117,7 +117,7 @@ const Home = () => {
                       uri: item.url,
                     }}
                     height={250}
-                    width={250}
+                    width={200}
                   />
 
                   <View style={[styles.flexCol, styles.itemFlatList]}>
