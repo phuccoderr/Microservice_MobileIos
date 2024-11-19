@@ -27,3 +27,11 @@ export const formatDate = (date: string) => {
 export const isEmpty = (obj: object) => {
   return Object.keys(obj).length === 0 && obj.constructor === Object;
 };
+
+// kí tự dài hơn 25 sẽ thành ...
+export const formatText = (text: string) => {
+  if (text.length > 25) {
+    return text.slice(0, 23) + "...";
+  }
+  return text;
+};

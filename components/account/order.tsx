@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Customer } from "@/types/customer.type";
 import { useGetOrderMe } from "@/hooks/query-orders/useGetOrderMe";
 import { FlashList } from "@shopify/flash-list";
-import { Button, IconButton, Text } from "react-native-paper";
+import { IconButton, Text } from "react-native-paper";
 import { OrderDetail } from "@/types/order.type";
 import { formatVnd } from "@/utils/common";
 import ModalReview from "@/components/modal-review";

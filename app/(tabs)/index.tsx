@@ -1,7 +1,6 @@
 import {
   SafeAreaView,
   StyleSheet,
-  FlatList,
   TouchableOpacity,
   View,
   Image,
@@ -9,22 +8,22 @@ import {
   StatusBar,
 } from "react-native";
 import React, { useState } from "react";
-import { TextInput } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useGetAllProductsByCategory } from "@/hooks/query-products/useGetAllProductsByCate";
 import useDebounce from "@/hooks/useDebounce";
-import { calSale, formatVnd } from "@/utils/common";
+import { calSale, formatText, formatVnd } from "@/utils/common";
 import Entypo from "@expo/vector-icons/Entypo";
 import { Link } from "expo-router";
 import { Button, Searchbar } from "react-native-paper";
 import { useGetAllCategories } from "@/hooks/query-categories/useGetAllCategories";
 import { FlashList } from "@shopify/flash-list";
+import { RefreshControl } from "react-native-gesture-handler";
 
 const Home = () => {
   const [cate, setCate] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
   const debounce = useDebounce(searchKeyword, 1000);
-  const { data: products } = useGetAllProductsByCategory({
+  const { data: products, refetch } = useGetAllProductsByCategory({
     page: 1,
     limit: 100,
     sort: "asc",
@@ -33,10 +32,17 @@ const Home = () => {
     sort_field: "",
   });
   const { data: categories } = useGetAllCategories();
+  const [refreshing, setRefreshing] = useState(false);
 
   const listItemCategories: { id: string; name: string }[] = [];
   listItemCategories.push({ id: "", name: "Tất cả" });
   listItemCategories.push(...(categories ?? []));
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
 
   return (
     <SafeAreaView>
@@ -90,15 +96,19 @@ const Home = () => {
             )}
           />
         </View>
-        <View style={styles.body}>
-          <FlatList
+        <View style={[{ flexGrow: 1, width: "100%", height: "91%" }]}>
+          <FlashList
             data={products?.entities ?? []}
-            keyExtractor={(item) => item.id}
+            extraData={products?.entities}
             numColumns={2}
-            columnWrapperStyle={{
-              justifyContent: "space-between",
-            }}
-            renderItem={({ item }) => (
+            estimatedItemSize={200}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ paddingBottom: 80 }}
+            ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            renderItem={({ item, index }) => (
               <Link
                 href={`/(user)/product/${item.id}`}
                 style={[
@@ -107,60 +117,63 @@ const Home = () => {
                     borderWidth: 1,
                     borderColor: "#d6d3d1",
                     borderRadius: 5,
-                    width: "49%",
+                    width: "95%",
+                    overflow: "hidden",
+                    marginRight: index % 2 === 0 ? "auto" : undefined,
+                    marginLeft: index % 2 === 1 ? "auto" : undefined,
                   },
                 ]}
               >
-                <View>
+                {!!item.url && (
                   <Image
                     source={{
                       uri: item.url,
                     }}
-                    height={250}
-                    width={200}
+                    style={{
+                      width: 210,
+                      height: 200,
+                    }}
                   />
+                )}
 
-                  <View style={[styles.flexCol, styles.itemFlatList]}>
-                    <Text style={styles.textXl}>{item.name}</Text>
-                    {item.sale > 0 ? (
-                      <View style={[styles.flexRow, styles.titleCard]}>
-                        <Text
-                          style={{
-                            color: "#ef4444",
-                            fontWeight: "bold",
-                            fontSize: 20,
-                          }}
-                        >
-                          {formatVnd(calSale(item.price, item.sale))}{" "}
-                        </Text>
-                        <View
-                          style={{
-                            backgroundColor: "rgb(253 224 71)",
-                            borderRadius: 5,
-                          }}
-                        >
-                          <Text style={{ color: "#ef4444" }}>
-                            -{item.sale}%
-                          </Text>
-                        </View>
-                      </View>
-                    ) : (
+                <View style={[styles.flexCol, styles.itemFlatList]}>
+                  <Text style={styles.textXl}>{formatText(item.name)}</Text>
+                  {item.sale > 0 ? (
+                    <View style={[styles.flexRow, styles.titleCard]}>
                       <Text
                         style={{
-                          color: "rgb(239 68 68)",
+                          color: "#ef4444",
                           fontWeight: "bold",
                           fontSize: 20,
                         }}
                       >
-                        {formatVnd(item.price)}
+                        {formatVnd(calSale(item.price, item.sale))}{" "}
                       </Text>
-                    )}
-                    <View style={[styles.flexRow, styles.cardFooter]}>
-                      <Text>{item.average_rating}</Text>
-                      <Entypo name="star" size={10} color="#eab308" />
-                      <View style={{ height: 8 }} />
-                      <Text>{item.review_count} Đánh giá</Text>
+                      <View
+                        style={{
+                          backgroundColor: "rgb(253 224 71)",
+                          borderRadius: 5,
+                        }}
+                      >
+                        <Text style={{ color: "#ef4444" }}>-{item.sale}%</Text>
+                      </View>
                     </View>
+                  ) : (
+                    <Text
+                      style={{
+                        color: "rgb(239 68 68)",
+                        fontWeight: "bold",
+                        fontSize: 20,
+                      }}
+                    >
+                      {formatVnd(item.price)}
+                    </Text>
+                  )}
+                  <View style={[styles.flexRow, styles.cardFooter]}>
+                    <Text>{item.average_rating}</Text>
+                    <Entypo name="star" size={10} color="#eab308" />
+                    <View style={{ height: 8 }} />
+                    <Text>{item.review_count} Đánh giá</Text>
                   </View>
                 </View>
               </Link>

@@ -77,9 +77,7 @@ const AccountScreen = () => {
                 <Info me={me} />
               </TabScreen>
               <TabScreen label="Hoá đơn">
-                <GestureHandlerRootView>
-                  <Order me={me} />
-                </GestureHandlerRootView>
+                <Order me={me} />
               </TabScreen>
             </Tabs>
           </TabsProvider>

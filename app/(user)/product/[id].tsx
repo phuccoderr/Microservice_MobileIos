@@ -57,10 +57,12 @@ const ProductDetail = () => {
               style={{ height: 300 }}
               renderItem={({ item }) => (
                 <View>
-                  <Image
-                    source={{ uri: item }}
-                    style={{ width: "100%", height: 400 }}
-                  />
+                  {!!item && (
+                    <Image
+                      source={{ uri: item }}
+                      style={{ width: "100%", height: 400 }}
+                    />
+                  )}
                 </View>
               )}
             />
@@ -94,32 +96,44 @@ const ProductDetail = () => {
               <Text style={{ color: "black" }}>Số lượng: {product?.stock}</Text>
             </View>
             {product && product?.sale > 0 ? (
-              <View style={[styles.flexRow, styles.titleCard]}>
+              <View style={[styles.flexCol]}>
                 <Text
                   style={{
-                    color: "#ef4444",
                     fontWeight: "bold",
-                    fontSize: 36,
+                    fontSize: 28,
+                    color: "black",
+                    textDecorationLine: "line-through",
                   }}
                 >
-                  {formatVnd(calSale(product.price, product.sale))}{" "}
+                  {formatVnd(product?.price ?? 0)}
                 </Text>
-                <View
-                  style={{
-                    backgroundColor: "rgb(253 224 71)",
-                    borderRadius: 5,
-                  }}
-                >
-                  <Text style={{ color: "#ef4444", fontSize: 20 }}>
-                    -{product.sale}%
+                <View style={[styles.flexRow, styles.titleCard]}>
+                  <Text
+                    style={{
+                      color: "#ef4444",
+                      fontWeight: "bold",
+                      fontSize: 28,
+                    }}
+                  >
+                    {formatVnd(calSale(product.price, product.sale))}{" "}
                   </Text>
+                  <View
+                    style={{
+                      backgroundColor: "rgb(253 224 71)",
+                      borderRadius: 5,
+                    }}
+                  >
+                    <Text style={{ color: "#ef4444", fontSize: 20 }}>
+                      -{product.sale}%
+                    </Text>
+                  </View>
                 </View>
               </View>
             ) : (
               <Text
                 style={{
                   fontWeight: "bold",
-                  fontSize: 36,
+                  fontSize: 28,
                   marginTop: 24,
                   color: "black",
                 }}
@@ -175,7 +189,7 @@ const ProductDetail = () => {
                   <View style={[styles.flexRow, { padding: 10, gap: 18 }]}>
                     <Avatar.Image
                       size={32}
-                      source={require("@/assets/images/phi-avatar.jpg")}
+                      source={require("@/assets/images/user-avatar.jpg")}
                     />
                     <View style={[styles.flexCol, { gap: 4 }]}>
                       <Text style={{ fontSize: 16, color: "black" }}>
@@ -263,7 +277,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   titleCard: {
-    marginTop: 24,
+    marginTop: 12,
     gap: 2,
     alignItems: "center",
   },
